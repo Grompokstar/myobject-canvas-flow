@@ -1,5 +1,5 @@
 import { Routes, Route, Outlet, Link } from "react-router-dom";
-import MainPage                      from './pageComponents/Main/Components';
+import MainPage                        from './pageComponents/Main/Components';
 
 import './styles/all.scss';
 

@@ -4,35 +4,34 @@ import ReactFlow, {
   Controls,
   Background,
   useNodesState,
-  useEdgesState,
-  addEdge,
+  applyNodeChanges
 } from 'reactflow';
+import FireExtinguisher from '../../components/reactFlow/CustomNode/Component'
 
 import 'reactflow/dist/style.css';
 
+const nodeTypes = { fireExtinguisher: FireExtinguisher };
+
 const initialNodes = [
-  { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
-  { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
+  { id: '1',  type: 'fireExtinguisher', position: { x: 0, y: 0 }, data: { label: '3' } },
 ];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 export default function MainPage() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes] = useNodesState(initialNodes);
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
+  );
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
         nodes={nodes}
-        edges={edges}
         onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+        nodeTypes={nodeTypes}
       >
         <Controls />
-        <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>
