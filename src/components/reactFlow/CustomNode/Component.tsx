@@ -1,11 +1,24 @@
+import { memo }        from 'react';
+import { NodeResizer } from 'reactflow';
 // @ts-ignore
-import styles from './node-compnents.module.scss'
+import styles          from './node-compnents.module.scss'
+import {AnyObject}     from '../../../interfaces';
 
-function FireExtinguisher() {
+const FireExtinguisher = ({data, selected}: AnyObject) => {
 
   return (
-    <div className={styles.root}/>
+    <div className={styles.image}>
+      <NodeResizer
+        color="#ce6667"
+        isVisible={selected}
+        minWidth={50}
+        minHeight={50}
+        keepAspectRatio={true}
+      />
+      <div className={styles.node}/>
+    </div>
+
   );
 }
 
-export default FireExtinguisher;
+export default memo(FireExtinguisher);

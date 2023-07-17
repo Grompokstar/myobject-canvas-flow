@@ -4,16 +4,22 @@ import ReactFlow, {
   Controls,
   Background,
   useNodesState,
-  applyNodeChanges
+  applyNodeChanges,
+  Panel,
+  useReactFlow
 } from 'reactflow';
-import FireExtinguisher from '../../components/reactFlow/CustomNode/Component'
+import FireExtinguisher from '../../components/reactFlow/CustomNode/Component';
+import styles from './main-component.module.scss';
 
 import 'reactflow/dist/style.css';
 
 const nodeTypes = { fireExtinguisher: FireExtinguisher };
 
+let id = 1;
+const getId = () => `${id++}`;
+
 const initialNodes = [
-  { id: '1',  type: 'fireExtinguisher', position: { x: 0, y: 0 }, data: { label: '3' } },
+  { id: id,  type: 'fireExtinguisher', position: { x: 0, y: 0 }, data: { label: '3' } },
 ];
 
 export default function MainPage() {
@@ -24,6 +30,19 @@ export default function MainPage() {
     [setNodes]
   );
 
+  const onAddNode = () => {
+    const id = getId();
+
+    const newNode = {
+      id,
+      type: 'fireExtinguisher',
+      position: { x: 500, y: 500 },
+      data: { label: `Node ${id}` },
+    };
+
+    setNodes((nds) => nds.concat(newNode));
+  }
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
@@ -31,7 +50,14 @@ export default function MainPage() {
         onNodesChange={onNodesChange}
         nodeTypes={nodeTypes}
       >
-        <Controls />
+        <Panel position="top-left">
+          <div className={styles.panel}>
+            <button onClick={onAddNode}>
+              Добавить новый элемент
+            </button>
+          </div>
+        </Panel>
+        {/*<Controls />*/}
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
     </div>
