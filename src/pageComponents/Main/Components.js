@@ -8,19 +8,24 @@ import ReactFlow, {
   Panel,
   useReactFlow
 } from 'reactflow';
-import FireExtinguisher from '../../components/reactFlow/CustomNode/Component';
+import FireExtinguisher from 'components/reactFlow/FireExtinguisher/Component';
+import RepairWorks from "components/reactFlow/RepairWorks/Component";
 import styles from './main-component.module.scss';
 
 import 'reactflow/dist/style.css';
+import DownloadButton from "../../components/reactFlow/DownloadButton/Component";
 
-const nodeTypes = { fireExtinguisher: FireExtinguisher };
+const nodeTypes = {
+  fireExtinguisher: FireExtinguisher,
+  RepairWorks: RepairWorks
+};
 
 let id = 1;
+let position = 300;
 const getId = () => `${id++}`;
+const getPosition = () => {position += 10; return position};
 
-const initialNodes = [
-  { id: id,  type: 'fireExtinguisher', position: { x: 0, y: 0 }, data: { label: '3' } },
-];
+const initialNodes = [];
 
 export default function MainPage() {
   const [nodes, setNodes] = useNodesState(initialNodes);
@@ -30,13 +35,13 @@ export default function MainPage() {
     [setNodes]
   );
 
-  const onAddNode = () => {
+  const onAddNode = (type) => {
     const id = getId();
 
     const newNode = {
       id,
-      type: 'fireExtinguisher',
-      position: { x: 500, y: 500 },
+      type: type,
+      position: { x: getPosition(), y: getPosition() },
       data: { label: `Node ${id}` },
     };
 
@@ -52,13 +57,27 @@ export default function MainPage() {
       >
         <Panel position="top-left">
           <div className={styles.panel}>
-            <button onClick={onAddNode}>
-              Добавить новый элемент
+            <button
+              className={styles.panel_button}
+              onClick={() => {
+                onAddNode('fireExtinguisher')
+              }}
+            >
+              <img src="/images/nodeIcons/fire_extinguisher.png"/>
+            </button>
+            <button
+              className={styles.panel_button}
+              onClick={() => {
+                onAddNode('RepairWorks')
+              }}
+            >
+              <img src="/images/nodeIcons/repair.png"/>
             </button>
           </div>
         </Panel>
         {/*<Controls />*/}
         <Background variant="dots" gap={12} size={1} />
+        <DownloadButton/>
       </ReactFlow>
     </div>
   );
