@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {AnyObject}         from 'interfaces';
+import React, {useEffect, useState} from 'react';
+import {AnyObject}                  from 'interfaces';
 
 const UploadAndDisplayImage = ({onChangeImage}: AnyObject) => {
 
@@ -19,8 +19,8 @@ const UploadAndDisplayImage = ({onChangeImage}: AnyObject) => {
           setSelectedImage(event.target.files[0]);
         }}
       />
-      <br />
-      <br />
+      <br/>
+      <br/>
       <button onClick={() => setSelectedImage(null)}>Удалить</button>
     </div>
   );

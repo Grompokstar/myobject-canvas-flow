@@ -1,13 +1,5 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import ReactFlow, {
-  MiniMap,
-  Controls,
-  Background,
-  useNodesState,
-  applyNodeChanges,
-  Panel,
-  useReactFlow
-} from 'reactflow';
+import React, {useCallback, useEffect, useState} from 'react';
+import ReactFlow, {applyNodeChanges, Background, Panel, useNodesState} from 'reactflow';
 import FireExtinguisher from 'components/reactFlow/FireExtinguisher/Component';
 import RepairWorks from "components/reactFlow/RepairWorks/Component";
 import styles from './main-component.module.scss';
@@ -24,7 +16,10 @@ const nodeTypes = {
 let id = 1;
 let position = 300;
 const getId = () => `${id++}`;
-const getPosition = () => {position += 10; return position};
+const getPosition = () => {
+  position += 10;
+  return position
+};
 
 const initialNodes = [];
 
@@ -47,8 +42,8 @@ export default function MainPage() {
     const newNode = {
       id,
       type: type,
-      position: { x: getPosition(), y: getPosition() },
-      data: { label: `Node ${id}` },
+      position: {x: getPosition(), y: getPosition()},
+      data: {label: `Node ${id}`},
     };
 
     setNodes((nds) => nds.concat(newNode));
@@ -72,7 +67,7 @@ export default function MainPage() {
   }
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }} className="my-classname">
+    <div style={{width: '100vw', height: '100vh'}} className="my-classname">
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}

@@ -1,7 +1,7 @@
-import React                                                          from 'react';
-import { Panel, useReactFlow, getRectOfNodes, getTransformForBounds } from 'reactflow';
-import { toPng }                                                      from 'html-to-image';
-import {useWindowSize}                                                from 'hooks/useWindowSIze';
+import React                 from 'react';
+import {Panel, useReactFlow} from 'reactflow';
+import {toPng}               from 'html-to-image';
+import {useWindowSize}       from 'hooks/useWindowSIze';
 
 function downloadImage(dataUrl: string) {
   const a = document.createElement('a');
@@ -13,7 +13,7 @@ function downloadImage(dataUrl: string) {
 
 
 function DownloadButton() {
-  const { getNodes } = useReactFlow();
+  const {getNodes} = useReactFlow();
   const {width, height} = useWindowSize();
 
   const onClick = () => {
