@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -11,9 +11,10 @@ import ReactFlow, {
 import FireExtinguisher from 'components/reactFlow/FireExtinguisher/Component';
 import RepairWorks from "components/reactFlow/RepairWorks/Component";
 import styles from './main-component.module.scss';
+import UploadImage from 'components/reactFlow/UploadImage/Component'
 
 import 'reactflow/dist/style.css';
-import DownloadButton from "../../components/reactFlow/DownloadButton/Component";
+import DownloadButton from "components/reactFlow/DownloadButton/Component";
 
 const nodeTypes = {
   fireExtinguisher: FireExtinguisher,
@@ -29,11 +30,16 @@ const initialNodes = [];
 
 export default function MainPage() {
   const [nodes, setNodes] = useNodesState(initialNodes);
+  const [backgroundImage, setBackgroundImage] = useState('')
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
   );
+
+  useEffect(() => {
+    console.log(nodes)
+  }, [nodes])
 
   const onAddNode = (type) => {
     const id = getId();
@@ -48,12 +54,30 @@ export default function MainPage() {
     setNodes((nds) => nds.concat(newNode));
   }
 
+  const onChangeBackgroundImage = (image) => {
+
+
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      const viewport = document.getElementsByClassName('react-flow__viewport')[0];
+      viewport.style.backgroundImage = `url(${imageUrl})`;
+      setBackgroundImage(imageUrl);
+    } else {
+      setBackgroundImage('');
+      const viewport = document.getElementsByClassName('react-flow__viewport')[0];
+      viewport.style.backgroundImage = `url('')`;
+    }
+
+
+  }
+
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh' }} className="my-classname">
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}
         nodeTypes={nodeTypes}
+        //style={{backgroundImage: `url(${backgroundImage})`}}
       >
         <Panel position="top-left">
           <div className={styles.panel}>
@@ -75,8 +99,12 @@ export default function MainPage() {
             </button>
           </div>
         </Panel>
+
+        <Panel position="bottom-right">
+          <UploadImage onChangeImage={onChangeBackgroundImage}/>
+        </Panel>
         {/*<Controls />*/}
-        <Background variant="dots" gap={12} size={1} />
+        <Background variant="dots" gap={12} size={1}/>
         <DownloadButton/>
       </ReactFlow>
     </div>

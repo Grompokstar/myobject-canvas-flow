@@ -19,3 +19,9 @@ html {
 .react-flow__attribution {
   display: none;
 }
+
+.react-flow__viewport, .react-flow__background {
+  background-repeat: no-repeat;
+  background-size: contain;
+  //background-position: center;
+}

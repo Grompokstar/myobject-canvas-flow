@@ -1,6 +1,7 @@
-import React from 'react';
+import React                                                          from 'react';
 import { Panel, useReactFlow, getRectOfNodes, getTransformForBounds } from 'reactflow';
-import { toPng } from 'html-to-image';
+import { toPng }                                                      from 'html-to-image';
+import {useWindowSize}                                                from 'hooks/useWindowSIze';
 
 function downloadImage(dataUrl: string) {
   const a = document.createElement('a');
@@ -10,35 +11,32 @@ function downloadImage(dataUrl: string) {
   a.click();
 }
 
-const imageWidth = 1024;
-const imageHeight = 1024;
 
 function DownloadButton() {
   const { getNodes } = useReactFlow();
+  const {width, height} = useWindowSize();
+
   const onClick = () => {
-    // we calculate a transform for the nodes so that all nodes are visible
-    // we then overwrite the transform of the `.react-flow__viewport` element
-    // with the style option of the html-to-image library
-    const nodesBounds = getRectOfNodes(getNodes());
-    const transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
+    //const nodesBounds = getRectOfNodes(getNodes());
+    //const transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight, 0.5, 2);
 
     // @ts-ignore
     toPng(document.querySelector('.react-flow__viewport'), {
       backgroundColor: '#fff',
-      width: imageWidth,
-      height: imageHeight,
+      width: width,
+      height: height,
       style: {
-        width: imageWidth,
-        height: imageHeight,
-        transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
+        width: width,
+        height: height,
+        //transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
       },
     }).then(downloadImage);
   };
 
   return (
     <Panel position="top-right">
-      <button className="download-btn" onClick={onClick}>
-        Download Image
+      <button className="download-btn" onClick={onClick} style={{fontSize: 18}}>
+        Скачать схему
       </button>
     </Panel>
   );
