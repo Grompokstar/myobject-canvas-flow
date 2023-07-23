@@ -13,6 +13,28 @@
 }
 
 .node {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
+}
+
+.delete_button {
+  display: none;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: red;
+
+  &.show {
+    display: flex;
+  }
+
+  &:hover {
+    color: darken(red, 10%)
+  }
 }
