@@ -1,16 +1,25 @@
 import React, {useCallback, useEffect, useState, useRef} from 'react';
 import ReactFlow, {applyNodeChanges, Background, Panel, useNodesState, ReactFlowProvider } from 'reactflow';
-import FireExtinguisher from 'components/reactFlow/FireExtinguisher/Component';
+import CustomNode from 'components/reactFlow/CustomNode/Component';
 import RepairWorks from "components/reactFlow/RepairWorks/Component";
 import UploadImage from 'components/reactFlow/UploadImage/Component';
 import DownloadButton from "components/reactFlow/DownloadButton/Component";
+import {MARKERS} from "constants/common";
 
 import 'reactflow/dist/style.css';
 import styles from './main-component.module.scss';
 
 const nodeTypes = {
-  fireExtinguisher: FireExtinguisher,
-  RepairWorks: RepairWorks
+  gas: CustomNode,
+  fire_fighting: CustomNode,
+  welding: CustomNode,
+  temperature_measurement: CustomNode,
+  control_valves: CustomNode,
+  control_valves_blowdown: CustomNode,
+  plug_removed: CustomNode,
+  plug_installed: CustomNode,
+  escape_routes: CustomNode,
+  warning_signs: CustomNode,
 };
 
 let id = 1;
@@ -60,11 +69,9 @@ export default function MainPage() {
     (event) => {
       event.preventDefault();
       const nodeId = getId();
-
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
 
-      // check if the dropped element is valid
       if (typeof type === 'undefined' || !type) {
         return;
       }
@@ -79,7 +86,7 @@ export default function MainPage() {
         type,
         position,
         data: {
-          label: `${type} node`,
+          type: type,
           onDelete: () => {
             reactFlowInstance.setNodes((nds) => nds.filter((node) => node.id !== nodeId))
           }
@@ -95,19 +102,18 @@ export default function MainPage() {
     <div className={styles.page_container}>
       <ReactFlowProvider>
         <div className={styles.panel}>
-          <button
-            className={styles.panel_button}
-            onDragStart={(event) => onDragStart(event, 'fireExtinguisher')}
-            draggable
-          >
-            <img src="/images/nodeIcons/fire_extinguisher.png"/>
-          </button>
-          <button
-            className={styles.panel_button}
-            onDragStart={(event) => onDragStart(event, 'RepairWorks')}
-          >
-            <img src="/images/nodeIcons/repair.png"/>
-          </button>
+          {MARKERS.map((item) => {
+            return (
+              <button
+                key={item.type}
+                className={styles.panel_button}
+                onDragStart={(event) => onDragStart(event, item.type)}
+                draggable
+              >
+                <img src={`/images/nodeIcons/${item.image}`}/>
+              </button>
+            )
+          })}
         </div>
         <div className={styles.reactflow_wrapper} ref={reactFlowWrapper}>
           <ReactFlow
